@@ -1,0 +1,7 @@
+Hoy se ha hecho la planificación y análisis de viabilidad.
+Se ha decidido usar java, git y scrum adaptado.
+Se ha hecho un tablero kambdan con tareas, especialmente de definición.
+Las tareas de implementación las añadiremos sobre la marcha.
+Se ha planificado las tareas de cada uno la semana que viene:
+Raúl: Hace tests de LN	
+Javi: Hace modelo dominio
