@@ -1,0 +1,1260 @@
+// Converter.java
+
+// To use this code, add the following Maven dependency to your project:
+//
+//
+//     com.fasterxml.jackson.core     : jackson-databind          : 2.9.0
+//     com.fasterxml.jackson.datatype : jackson-datatype-jsr310   : 2.9.0
+//
+// Import this package:
+//
+//     import io.quicktype.Converter;
+//
+// Then you can deserialize a JSON string with
+//
+//     Welcome data = Converter.fromJsonString(jsonString);
+
+package io.quicktype;
+
+import java.io.IOException;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.*;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+
+public class Converter {
+    // Date-time helpers
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .appendOptional(DateTimeFormatter.ISO_DATE_TIME)
+            .appendOptional(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            .appendOptional(DateTimeFormatter.ISO_INSTANT)
+            .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SX"))
+            .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssX"))
+            .appendOptional(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            .toFormatter()
+            .withZone(ZoneOffset.UTC);
+
+    public static OffsetDateTime parseDateTimeString(String str) {
+        return ZonedDateTime.from(Converter.DATE_TIME_FORMATTER.parse(str)).toOffsetDateTime();
+    }
+
+    private static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
+            .appendOptional(DateTimeFormatter.ISO_TIME)
+            .appendOptional(DateTimeFormatter.ISO_OFFSET_TIME)
+            .parseDefaulting(ChronoField.YEAR, 2020)
+            .parseDefaulting(ChronoField.MONTH_OF_YEAR, 1)
+            .parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
+            .toFormatter()
+            .withZone(ZoneOffset.UTC);
+
+    public static OffsetTime parseTimeString(String str) {
+        return ZonedDateTime.from(Converter.TIME_FORMATTER.parse(str)).toOffsetDateTime().toOffsetTime();
+    }
+    // Serialize/deserialize helpers
+
+    public static Welcome fromJsonString(String json) throws IOException {
+        return getObjectReader().readValue(json);
+    }
+
+    public static String toJsonString(Welcome obj) throws JsonProcessingException {
+        return getObjectWriter().writeValueAsString(obj);
+    }
+
+    private static ObjectReader reader;
+    private static ObjectWriter writer;
+
+    private static void instantiateMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
+            @Override
+            public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+                String value = jsonParser.getText();
+                return Converter.parseDateTimeString(value);
+            }
+        });
+        mapper.registerModule(module);
+        reader = mapper.readerFor(Welcome.class);
+        writer = mapper.writerFor(Welcome.class);
+    }
+
+    private static ObjectReader getObjectReader() {
+        if (reader == null) instantiateMapper();
+        return reader;
+    }
+
+    private static ObjectWriter getObjectWriter() {
+        if (writer == null) instantiateMapper();
+        return writer;
+    }
+}
+
+// Welcome.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+import java.util.List;
+
+public class Welcome {
+    private String openapi;
+    private Info info;
+    private Paths paths;
+    private Components components;
+    private List<Tag> tags;
+
+    @JsonProperty("openapi")
+    public String getOpenapi() { return openapi; }
+    @JsonProperty("openapi")
+    public void setOpenapi(String value) { this.openapi = value; }
+
+    @JsonProperty("info")
+    public Info getInfo() { return info; }
+    @JsonProperty("info")
+    public void setInfo(Info value) { this.info = value; }
+
+    @JsonProperty("paths")
+    public Paths getPaths() { return paths; }
+    @JsonProperty("paths")
+    public void setPaths(Paths value) { this.paths = value; }
+
+    @JsonProperty("components")
+    public Components getComponents() { return components; }
+    @JsonProperty("components")
+    public void setComponents(Components value) { this.components = value; }
+
+    @JsonProperty("tags")
+    public List<Tag> getTags() { return tags; }
+    @JsonProperty("tags")
+    public void setTags(List<Tag> value) { this.tags = value; }
+}
+
+// Components.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Components {
+    private Schemas schemas;
+
+    @JsonProperty("schemas")
+    public Schemas getSchemas() { return schemas; }
+    @JsonProperty("schemas")
+    public void setSchemas(Schemas value) { this.schemas = value; }
+}
+
+// Schemas.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Schemas {
+    private EmailResponse emailResponse;
+    private ProblemDetails problemDetails;
+    private ResultsResponse resultsResponse;
+    private Solicitud solicitud;
+    private SolicitudResponse solicitudResponse;
+
+    @JsonProperty("EmailResponse")
+    public EmailResponse getEmailResponse() { return emailResponse; }
+    @JsonProperty("EmailResponse")
+    public void setEmailResponse(EmailResponse value) { this.emailResponse = value; }
+
+    @JsonProperty("ProblemDetails")
+    public ProblemDetails getProblemDetails() { return problemDetails; }
+    @JsonProperty("ProblemDetails")
+    public void setProblemDetails(ProblemDetails value) { this.problemDetails = value; }
+
+    @JsonProperty("ResultsResponse")
+    public ResultsResponse getResultsResponse() { return resultsResponse; }
+    @JsonProperty("ResultsResponse")
+    public void setResultsResponse(ResultsResponse value) { this.resultsResponse = value; }
+
+    @JsonProperty("Solicitud")
+    public Solicitud getSolicitud() { return solicitud; }
+    @JsonProperty("Solicitud")
+    public void setSolicitud(Solicitud value) { this.solicitud = value; }
+
+    @JsonProperty("SolicitudResponse")
+    public SolicitudResponse getSolicitudResponse() { return solicitudResponse; }
+    @JsonProperty("SolicitudResponse")
+    public void setSolicitudResponse(SolicitudResponse value) { this.solicitudResponse = value; }
+}
+
+// EmailResponse.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class EmailResponse {
+    private String type;
+    private EmailResponseProperties properties;
+    private boolean additionalProperties;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("properties")
+    public EmailResponseProperties getProperties() { return properties; }
+    @JsonProperty("properties")
+    public void setProperties(EmailResponseProperties value) { this.properties = value; }
+
+    @JsonProperty("additionalProperties")
+    public boolean getAdditionalProperties() { return additionalProperties; }
+    @JsonProperty("additionalProperties")
+    public void setAdditionalProperties(boolean value) { this.additionalProperties = value; }
+}
+
+// EmailResponseProperties.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class EmailResponseProperties {
+    private Done done;
+    private ErrorMessage errorMessage;
+
+    @JsonProperty("done")
+    public Done getDone() { return done; }
+    @JsonProperty("done")
+    public void setDone(Done value) { this.done = value; }
+
+    @JsonProperty("errorMessage")
+    public ErrorMessage getErrorMessage() { return errorMessage; }
+    @JsonProperty("errorMessage")
+    public void setErrorMessage(ErrorMessage value) { this.errorMessage = value; }
+}
+
+// Done.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Done {
+    private String type;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+}
+
+// ErrorMessage.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class ErrorMessage {
+    private Type type;
+    private boolean nullable;
+
+    @JsonProperty("type")
+    public Type getType() { return type; }
+    @JsonProperty("type")
+    public void setType(Type value) { this.type = value; }
+
+    @JsonProperty("nullable")
+    public boolean getNullable() { return nullable; }
+    @JsonProperty("nullable")
+    public void setNullable(boolean value) { this.nullable = value; }
+}
+
+// Type.java
+
+package io.quicktype;
+
+import java.io.IOException;
+import com.fasterxml.jackson.annotation.*;
+
+public enum Type {
+    INTEGER, STRING;
+
+    @JsonValue
+    public String toValue() {
+        switch (this) {
+            case INTEGER: return "integer";
+            case STRING: return "string";
+        }
+        return null;
+    }
+
+    @JsonCreator
+    public static Type forValue(String value) throws IOException {
+        if (value.equals("integer")) return INTEGER;
+        if (value.equals("string")) return STRING;
+        throw new IOException("Cannot deserialize Type");
+    }
+}
+
+// ProblemDetails.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class ProblemDetails {
+    private String type;
+    private ProblemDetailsProperties properties;
+    private AdditionalProperties additionalProperties;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("properties")
+    public ProblemDetailsProperties getProperties() { return properties; }
+    @JsonProperty("properties")
+    public void setProperties(ProblemDetailsProperties value) { this.properties = value; }
+
+    @JsonProperty("additionalProperties")
+    public AdditionalProperties getAdditionalProperties() { return additionalProperties; }
+    @JsonProperty("additionalProperties")
+    public void setAdditionalProperties(AdditionalProperties value) { this.additionalProperties = value; }
+}
+
+// AdditionalProperties.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+@JsonAutoDetect(fieldVisibility=JsonAutoDetect.Visibility.NONE)
+public class AdditionalProperties {
+}
+
+// ProblemDetailsProperties.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class ProblemDetailsProperties {
+    private ErrorMessage type;
+    private ErrorMessage title;
+    private Status status;
+    private ErrorMessage detail;
+    private ErrorMessage instance;
+
+    @JsonProperty("type")
+    public ErrorMessage getType() { return type; }
+    @JsonProperty("type")
+    public void setType(ErrorMessage value) { this.type = value; }
+
+    @JsonProperty("title")
+    public ErrorMessage getTitle() { return title; }
+    @JsonProperty("title")
+    public void setTitle(ErrorMessage value) { this.title = value; }
+
+    @JsonProperty("status")
+    public Status getStatus() { return status; }
+    @JsonProperty("status")
+    public void setStatus(Status value) { this.status = value; }
+
+    @JsonProperty("detail")
+    public ErrorMessage getDetail() { return detail; }
+    @JsonProperty("detail")
+    public void setDetail(ErrorMessage value) { this.detail = value; }
+
+    @JsonProperty("instance")
+    public ErrorMessage getInstance() { return instance; }
+    @JsonProperty("instance")
+    public void setInstance(ErrorMessage value) { this.instance = value; }
+}
+
+// Status.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Status {
+    private Type type;
+    private Format format;
+    private boolean nullable;
+
+    @JsonProperty("type")
+    public Type getType() { return type; }
+    @JsonProperty("type")
+    public void setType(Type value) { this.type = value; }
+
+    @JsonProperty("format")
+    public Format getFormat() { return format; }
+    @JsonProperty("format")
+    public void setFormat(Format value) { this.format = value; }
+
+    @JsonProperty("nullable")
+    public boolean getNullable() { return nullable; }
+    @JsonProperty("nullable")
+    public void setNullable(boolean value) { this.nullable = value; }
+}
+
+// Format.java
+
+package io.quicktype;
+
+import java.io.IOException;
+import com.fasterxml.jackson.annotation.*;
+
+public enum Format {
+    INT32;
+
+    @JsonValue
+    public String toValue() {
+        switch (this) {
+            case INT32: return "int32";
+        }
+        return null;
+    }
+
+    @JsonCreator
+    public static Format forValue(String value) throws IOException {
+        if (value.equals("int32")) return INT32;
+        throw new IOException("Cannot deserialize Format");
+    }
+}
+
+// ResultsResponse.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class ResultsResponse {
+    private String type;
+    private ResultsResponseProperties properties;
+    private boolean additionalProperties;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("properties")
+    public ResultsResponseProperties getProperties() { return properties; }
+    @JsonProperty("properties")
+    public void setProperties(ResultsResponseProperties value) { this.properties = value; }
+
+    @JsonProperty("additionalProperties")
+    public boolean getAdditionalProperties() { return additionalProperties; }
+    @JsonProperty("additionalProperties")
+    public void setAdditionalProperties(boolean value) { this.additionalProperties = value; }
+}
+
+// ResultsResponseProperties.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class ResultsResponseProperties {
+    private Done done;
+    private TokenSolicitud tokenSolicitud;
+    private ErrorMessage errorMessage;
+    private ErrorMessage data;
+
+    @JsonProperty("done")
+    public Done getDone() { return done; }
+    @JsonProperty("done")
+    public void setDone(Done value) { this.done = value; }
+
+    @JsonProperty("tokenSolicitud")
+    public TokenSolicitud getTokenSolicitud() { return tokenSolicitud; }
+    @JsonProperty("tokenSolicitud")
+    public void setTokenSolicitud(TokenSolicitud value) { this.tokenSolicitud = value; }
+
+    @JsonProperty("errorMessage")
+    public ErrorMessage getErrorMessage() { return errorMessage; }
+    @JsonProperty("errorMessage")
+    public void setErrorMessage(ErrorMessage value) { this.errorMessage = value; }
+
+    @JsonProperty("data")
+    public ErrorMessage getData() { return data; }
+    @JsonProperty("data")
+    public void setData(ErrorMessage value) { this.data = value; }
+}
+
+// TokenSolicitud.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class TokenSolicitud {
+    private Type type;
+    private Format format;
+
+    @JsonProperty("type")
+    public Type getType() { return type; }
+    @JsonProperty("type")
+    public void setType(Type value) { this.type = value; }
+
+    @JsonProperty("format")
+    public Format getFormat() { return format; }
+    @JsonProperty("format")
+    public void setFormat(Format value) { this.format = value; }
+}
+
+// Solicitud.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Solicitud {
+    private String type;
+    private SolicitudProperties properties;
+    private boolean additionalProperties;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("properties")
+    public SolicitudProperties getProperties() { return properties; }
+    @JsonProperty("properties")
+    public void setProperties(SolicitudProperties value) { this.properties = value; }
+
+    @JsonProperty("additionalProperties")
+    public boolean getAdditionalProperties() { return additionalProperties; }
+    @JsonProperty("additionalProperties")
+    public void setAdditionalProperties(boolean value) { this.additionalProperties = value; }
+}
+
+// SolicitudProperties.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class SolicitudProperties {
+    private CantidadesIniciales cantidadesIniciales;
+    private NombreEntidades nombreEntidades;
+
+    @JsonProperty("cantidadesIniciales")
+    public CantidadesIniciales getCantidadesIniciales() { return cantidadesIniciales; }
+    @JsonProperty("cantidadesIniciales")
+    public void setCantidadesIniciales(CantidadesIniciales value) { this.cantidadesIniciales = value; }
+
+    @JsonProperty("nombreEntidades")
+    public NombreEntidades getNombreEntidades() { return nombreEntidades; }
+    @JsonProperty("nombreEntidades")
+    public void setNombreEntidades(NombreEntidades value) { this.nombreEntidades = value; }
+}
+
+// CantidadesIniciales.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class CantidadesIniciales {
+    private String type;
+    private TokenSolicitud items;
+    private boolean nullable;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("items")
+    public TokenSolicitud getItems() { return items; }
+    @JsonProperty("items")
+    public void setItems(TokenSolicitud value) { this.items = value; }
+
+    @JsonProperty("nullable")
+    public boolean getNullable() { return nullable; }
+    @JsonProperty("nullable")
+    public void setNullable(boolean value) { this.nullable = value; }
+}
+
+// NombreEntidades.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class NombreEntidades {
+    private String type;
+    private Done items;
+    private boolean nullable;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("items")
+    public Done getItems() { return items; }
+    @JsonProperty("items")
+    public void setItems(Done value) { this.items = value; }
+
+    @JsonProperty("nullable")
+    public boolean getNullable() { return nullable; }
+    @JsonProperty("nullable")
+    public void setNullable(boolean value) { this.nullable = value; }
+}
+
+// SolicitudResponse.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class SolicitudResponse {
+    private String type;
+    private SolicitudResponseProperties properties;
+    private boolean additionalProperties;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("properties")
+    public SolicitudResponseProperties getProperties() { return properties; }
+    @JsonProperty("properties")
+    public void setProperties(SolicitudResponseProperties value) { this.properties = value; }
+
+    @JsonProperty("additionalProperties")
+    public boolean getAdditionalProperties() { return additionalProperties; }
+    @JsonProperty("additionalProperties")
+    public void setAdditionalProperties(boolean value) { this.additionalProperties = value; }
+}
+
+// SolicitudResponseProperties.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class SolicitudResponseProperties {
+    private Done done;
+    private TokenSolicitud tokenSolicitud;
+    private ErrorMessage errorMessage;
+    private Done data;
+
+    @JsonProperty("done")
+    public Done getDone() { return done; }
+    @JsonProperty("done")
+    public void setDone(Done value) { this.done = value; }
+
+    @JsonProperty("tokenSolicitud")
+    public TokenSolicitud getTokenSolicitud() { return tokenSolicitud; }
+    @JsonProperty("tokenSolicitud")
+    public void setTokenSolicitud(TokenSolicitud value) { this.tokenSolicitud = value; }
+
+    @JsonProperty("errorMessage")
+    public ErrorMessage getErrorMessage() { return errorMessage; }
+    @JsonProperty("errorMessage")
+    public void setErrorMessage(ErrorMessage value) { this.errorMessage = value; }
+
+    @JsonProperty("data")
+    public Done getData() { return data; }
+    @JsonProperty("data")
+    public void setData(Done value) { this.data = value; }
+}
+
+// Info.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Info {
+    private String title;
+    private String version;
+
+    @JsonProperty("title")
+    public String getTitle() { return title; }
+    @JsonProperty("title")
+    public void setTitle(String value) { this.title = value; }
+
+    @JsonProperty("version")
+    public String getVersion() { return version; }
+    @JsonProperty("version")
+    public void setVersion(String value) { this.version = value; }
+}
+
+// Paths.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Paths {
+    private Email email;
+    private Resultados resultados;
+    private Email solicitudSolicitar;
+    private SolicitudGetSolicitudesUsuario solicitudGetSolicitudesUsuario;
+    private SolicitudComprobarSolicitud solicitudComprobarSolicitud;
+
+    @JsonProperty("/Email")
+    public Email getEmail() { return email; }
+    @JsonProperty("/Email")
+    public void setEmail(Email value) { this.email = value; }
+
+    @JsonProperty("/Resultados")
+    public Resultados getResultados() { return resultados; }
+    @JsonProperty("/Resultados")
+    public void setResultados(Resultados value) { this.resultados = value; }
+
+    @JsonProperty("/Solicitud/Solicitar")
+    public Email getSolicitudSolicitar() { return solicitudSolicitar; }
+    @JsonProperty("/Solicitud/Solicitar")
+    public void setSolicitudSolicitar(Email value) { this.solicitudSolicitar = value; }
+
+    @JsonProperty("/Solicitud/GetSolicitudesUsuario")
+    public SolicitudGetSolicitudesUsuario getSolicitudGetSolicitudesUsuario() { return solicitudGetSolicitudesUsuario; }
+    @JsonProperty("/Solicitud/GetSolicitudesUsuario")
+    public void setSolicitudGetSolicitudesUsuario(SolicitudGetSolicitudesUsuario value) { this.solicitudGetSolicitudesUsuario = value; }
+
+    @JsonProperty("/Solicitud/ComprobarSolicitud")
+    public SolicitudComprobarSolicitud getSolicitudComprobarSolicitud() { return solicitudComprobarSolicitud; }
+    @JsonProperty("/Solicitud/ComprobarSolicitud")
+    public void setSolicitudComprobarSolicitud(SolicitudComprobarSolicitud value) { this.solicitudComprobarSolicitud = value; }
+}
+
+// Email.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Email {
+    private EmailPost post;
+
+    @JsonProperty("post")
+    public EmailPost getPost() { return post; }
+    @JsonProperty("post")
+    public void setPost(EmailPost value) { this.post = value; }
+}
+
+// EmailPost.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+import java.util.List;
+import java.util.Map;
+
+public class EmailPost {
+    private List<String> tags;
+    private List<PurpleParameter> parameters;
+    private Map<String, PostResponse> responses;
+    private RequestBody requestBody;
+
+    @JsonProperty("tags")
+    public List<String> getTags() { return tags; }
+    @JsonProperty("tags")
+    public void setTags(List<String> value) { this.tags = value; }
+
+    @JsonProperty("parameters")
+    public List<PurpleParameter> getParameters() { return parameters; }
+    @JsonProperty("parameters")
+    public void setParameters(List<PurpleParameter> value) { this.parameters = value; }
+
+    @JsonProperty("responses")
+    public Map<String, PostResponse> getResponses() { return responses; }
+    @JsonProperty("responses")
+    public void setResponses(Map<String, PostResponse> value) { this.responses = value; }
+
+    @JsonProperty("requestBody")
+    public RequestBody getRequestBody() { return requestBody; }
+    @JsonProperty("requestBody")
+    public void setRequestBody(RequestBody value) { this.requestBody = value; }
+}
+
+// PurpleParameter.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class PurpleParameter {
+    private String name;
+    private String in;
+    private Done schema;
+
+    @JsonProperty("name")
+    public String getName() { return name; }
+    @JsonProperty("name")
+    public void setName(String value) { this.name = value; }
+
+    @JsonProperty("in")
+    public String getIn() { return in; }
+    @JsonProperty("in")
+    public void setIn(String value) { this.in = value; }
+
+    @JsonProperty("schema")
+    public Done getSchema() { return schema; }
+    @JsonProperty("schema")
+    public void setSchema(Done value) { this.schema = value; }
+}
+
+// RequestBody.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class RequestBody {
+    private RequestBodyContent content;
+
+    @JsonProperty("content")
+    public RequestBodyContent getContent() { return content; }
+    @JsonProperty("content")
+    public void setContent(RequestBodyContent value) { this.content = value; }
+}
+
+// RequestBodyContent.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class RequestBodyContent {
+    private ApplicationJSONClass contentApplicationJSON;
+    private ApplicationJSONClass textJSON;
+    private ApplicationJSONClass applicationJSON;
+
+    @JsonProperty("application/json")
+    public ApplicationJSONClass getContentApplicationJSON() { return contentApplicationJSON; }
+    @JsonProperty("application/json")
+    public void setContentApplicationJSON(ApplicationJSONClass value) { this.contentApplicationJSON = value; }
+
+    @JsonProperty("text/json")
+    public ApplicationJSONClass getTextJSON() { return textJSON; }
+    @JsonProperty("text/json")
+    public void setTextJSON(ApplicationJSONClass value) { this.textJSON = value; }
+
+    @JsonProperty("application/*+json")
+    public ApplicationJSONClass getApplicationJSON() { return applicationJSON; }
+    @JsonProperty("application/*+json")
+    public void setApplicationJSON(ApplicationJSONClass value) { this.applicationJSON = value; }
+}
+
+// ApplicationJSONClass.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class ApplicationJSONClass {
+    private ApplicationJSONSchema schema;
+
+    @JsonProperty("schema")
+    public ApplicationJSONSchema getSchema() { return schema; }
+    @JsonProperty("schema")
+    public void setSchema(ApplicationJSONSchema value) { this.schema = value; }
+}
+
+// ApplicationJSONSchema.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class ApplicationJSONSchema {
+    private Ref ref;
+
+    @JsonProperty("$ref")
+    public Ref getRef() { return ref; }
+    @JsonProperty("$ref")
+    public void setRef(Ref value) { this.ref = value; }
+}
+
+// Ref.java
+
+package io.quicktype;
+
+import java.io.IOException;
+import com.fasterxml.jackson.annotation.*;
+
+public enum Ref {
+    COMPONENTS_SCHEMAS_EMAIL_RESPONSE, COMPONENTS_SCHEMAS_PROBLEM_DETAILS, COMPONENTS_SCHEMAS_RESULTS_RESPONSE, COMPONENTS_SCHEMAS_SOLICITUD, COMPONENTS_SCHEMAS_SOLICITUD_RESPONSE;
+
+    @JsonValue
+    public String toValue() {
+        switch (this) {
+            case COMPONENTS_SCHEMAS_EMAIL_RESPONSE: return "#/components/schemas/EmailResponse";
+            case COMPONENTS_SCHEMAS_PROBLEM_DETAILS: return "#/components/schemas/ProblemDetails";
+            case COMPONENTS_SCHEMAS_RESULTS_RESPONSE: return "#/components/schemas/ResultsResponse";
+            case COMPONENTS_SCHEMAS_SOLICITUD: return "#/components/schemas/Solicitud";
+            case COMPONENTS_SCHEMAS_SOLICITUD_RESPONSE: return "#/components/schemas/SolicitudResponse";
+        }
+        return null;
+    }
+
+    @JsonCreator
+    public static Ref forValue(String value) throws IOException {
+        if (value.equals("#/components/schemas/EmailResponse")) return COMPONENTS_SCHEMAS_EMAIL_RESPONSE;
+        if (value.equals("#/components/schemas/ProblemDetails")) return COMPONENTS_SCHEMAS_PROBLEM_DETAILS;
+        if (value.equals("#/components/schemas/ResultsResponse")) return COMPONENTS_SCHEMAS_RESULTS_RESPONSE;
+        if (value.equals("#/components/schemas/Solicitud")) return COMPONENTS_SCHEMAS_SOLICITUD;
+        if (value.equals("#/components/schemas/SolicitudResponse")) return COMPONENTS_SCHEMAS_SOLICITUD_RESPONSE;
+        throw new IOException("Cannot deserialize Ref");
+    }
+}
+
+// PostResponse.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class PostResponse {
+    private Description description;
+    private PurpleContent content;
+
+    @JsonProperty("description")
+    public Description getDescription() { return description; }
+    @JsonProperty("description")
+    public void setDescription(Description value) { this.description = value; }
+
+    @JsonProperty("content")
+    public PurpleContent getContent() { return content; }
+    @JsonProperty("content")
+    public void setContent(PurpleContent value) { this.content = value; }
+}
+
+// PurpleContent.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class PurpleContent {
+    private ApplicationJSONClass textPlain;
+    private ApplicationJSONClass applicationJSON;
+    private ApplicationJSONClass textJSON;
+
+    @JsonProperty("text/plain")
+    public ApplicationJSONClass getTextPlain() { return textPlain; }
+    @JsonProperty("text/plain")
+    public void setTextPlain(ApplicationJSONClass value) { this.textPlain = value; }
+
+    @JsonProperty("application/json")
+    public ApplicationJSONClass getApplicationJSON() { return applicationJSON; }
+    @JsonProperty("application/json")
+    public void setApplicationJSON(ApplicationJSONClass value) { this.applicationJSON = value; }
+
+    @JsonProperty("text/json")
+    public ApplicationJSONClass getTextJSON() { return textJSON; }
+    @JsonProperty("text/json")
+    public void setTextJSON(ApplicationJSONClass value) { this.textJSON = value; }
+}
+
+// Description.java
+
+package io.quicktype;
+
+import java.io.IOException;
+import com.fasterxml.jackson.annotation.*;
+
+public enum Description {
+    BAD_REQUEST, CREATED;
+
+    @JsonValue
+    public String toValue() {
+        switch (this) {
+            case BAD_REQUEST: return "Bad Request";
+            case CREATED: return "Created";
+        }
+        return null;
+    }
+
+    @JsonCreator
+    public static Description forValue(String value) throws IOException {
+        if (value.equals("Bad Request")) return BAD_REQUEST;
+        if (value.equals("Created")) return CREATED;
+        throw new IOException("Cannot deserialize Description");
+    }
+}
+
+// Resultados.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Resultados {
+    private ResultadosPost post;
+
+    @JsonProperty("post")
+    public ResultadosPost getPost() { return post; }
+    @JsonProperty("post")
+    public void setPost(ResultadosPost value) { this.post = value; }
+}
+
+// ResultadosPost.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+import java.util.List;
+import java.util.Map;
+
+public class ResultadosPost {
+    private List<String> tags;
+    private List<FluffyParameter> parameters;
+    private Map<String, PostResponse> responses;
+
+    @JsonProperty("tags")
+    public List<String> getTags() { return tags; }
+    @JsonProperty("tags")
+    public void setTags(List<String> value) { this.tags = value; }
+
+    @JsonProperty("parameters")
+    public List<FluffyParameter> getParameters() { return parameters; }
+    @JsonProperty("parameters")
+    public void setParameters(List<FluffyParameter> value) { this.parameters = value; }
+
+    @JsonProperty("responses")
+    public Map<String, PostResponse> getResponses() { return responses; }
+    @JsonProperty("responses")
+    public void setResponses(Map<String, PostResponse> value) { this.responses = value; }
+}
+
+// FluffyParameter.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class FluffyParameter {
+    private String name;
+    private String in;
+    private TokenSolicitud schema;
+
+    @JsonProperty("name")
+    public String getName() { return name; }
+    @JsonProperty("name")
+    public void setName(String value) { this.name = value; }
+
+    @JsonProperty("in")
+    public String getIn() { return in; }
+    @JsonProperty("in")
+    public void setIn(String value) { this.in = value; }
+
+    @JsonProperty("schema")
+    public TokenSolicitud getSchema() { return schema; }
+    @JsonProperty("schema")
+    public void setSchema(TokenSolicitud value) { this.schema = value; }
+}
+
+// SolicitudComprobarSolicitud.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class SolicitudComprobarSolicitud {
+    private SolicitudComprobarSolicitudGet get;
+
+    @JsonProperty("get")
+    public SolicitudComprobarSolicitudGet getGet() { return get; }
+    @JsonProperty("get")
+    public void setGet(SolicitudComprobarSolicitudGet value) { this.get = value; }
+}
+
+// SolicitudComprobarSolicitudGet.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+import java.util.List;
+import java.util.Map;
+
+public class SolicitudComprobarSolicitudGet {
+    private List<String> tags;
+    private List<FluffyParameter> parameters;
+    private Map<String, GetResponse> responses;
+
+    @JsonProperty("tags")
+    public List<String> getTags() { return tags; }
+    @JsonProperty("tags")
+    public void setTags(List<String> value) { this.tags = value; }
+
+    @JsonProperty("parameters")
+    public List<FluffyParameter> getParameters() { return parameters; }
+    @JsonProperty("parameters")
+    public void setParameters(List<FluffyParameter> value) { this.parameters = value; }
+
+    @JsonProperty("responses")
+    public Map<String, GetResponse> getResponses() { return responses; }
+    @JsonProperty("responses")
+    public void setResponses(Map<String, GetResponse> value) { this.responses = value; }
+}
+
+// GetResponse.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class GetResponse {
+    private Description description;
+    private FluffyContent content;
+
+    @JsonProperty("description")
+    public Description getDescription() { return description; }
+    @JsonProperty("description")
+    public void setDescription(Description value) { this.description = value; }
+
+    @JsonProperty("content")
+    public FluffyContent getContent() { return content; }
+    @JsonProperty("content")
+    public void setContent(FluffyContent value) { this.content = value; }
+}
+
+// FluffyContent.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class FluffyContent {
+    private PurpleApplicationJSON textPlain;
+    private PurpleApplicationJSON applicationJSON;
+    private PurpleApplicationJSON textJSON;
+
+    @JsonProperty("text/plain")
+    public PurpleApplicationJSON getTextPlain() { return textPlain; }
+    @JsonProperty("text/plain")
+    public void setTextPlain(PurpleApplicationJSON value) { this.textPlain = value; }
+
+    @JsonProperty("application/json")
+    public PurpleApplicationJSON getApplicationJSON() { return applicationJSON; }
+    @JsonProperty("application/json")
+    public void setApplicationJSON(PurpleApplicationJSON value) { this.applicationJSON = value; }
+
+    @JsonProperty("text/json")
+    public PurpleApplicationJSON getTextJSON() { return textJSON; }
+    @JsonProperty("text/json")
+    public void setTextJSON(PurpleApplicationJSON value) { this.textJSON = value; }
+}
+
+// PurpleApplicationJSON.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class PurpleApplicationJSON {
+    private PurpleSchema schema;
+
+    @JsonProperty("schema")
+    public PurpleSchema getSchema() { return schema; }
+    @JsonProperty("schema")
+    public void setSchema(PurpleSchema value) { this.schema = value; }
+}
+
+// PurpleSchema.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class PurpleSchema {
+    private String type;
+    private TokenSolicitud items;
+    private Ref ref;
+
+    @JsonProperty("type")
+    public String getType() { return type; }
+    @JsonProperty("type")
+    public void setType(String value) { this.type = value; }
+
+    @JsonProperty("items")
+    public TokenSolicitud getItems() { return items; }
+    @JsonProperty("items")
+    public void setItems(TokenSolicitud value) { this.items = value; }
+
+    @JsonProperty("$ref")
+    public Ref getRef() { return ref; }
+    @JsonProperty("$ref")
+    public void setRef(Ref value) { this.ref = value; }
+}
+
+// SolicitudGetSolicitudesUsuario.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class SolicitudGetSolicitudesUsuario {
+    private SolicitudGetSolicitudesUsuarioGet get;
+
+    @JsonProperty("get")
+    public SolicitudGetSolicitudesUsuarioGet getGet() { return get; }
+    @JsonProperty("get")
+    public void setGet(SolicitudGetSolicitudesUsuarioGet value) { this.get = value; }
+}
+
+// SolicitudGetSolicitudesUsuarioGet.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+import java.util.List;
+import java.util.Map;
+
+public class SolicitudGetSolicitudesUsuarioGet {
+    private List<String> tags;
+    private List<PurpleParameter> parameters;
+    private Map<String, GetResponse> responses;
+
+    @JsonProperty("tags")
+    public List<String> getTags() { return tags; }
+    @JsonProperty("tags")
+    public void setTags(List<String> value) { this.tags = value; }
+
+    @JsonProperty("parameters")
+    public List<PurpleParameter> getParameters() { return parameters; }
+    @JsonProperty("parameters")
+    public void setParameters(List<PurpleParameter> value) { this.parameters = value; }
+
+    @JsonProperty("responses")
+    public Map<String, GetResponse> getResponses() { return responses; }
+    @JsonProperty("responses")
+    public void setResponses(Map<String, GetResponse> value) { this.responses = value; }
+}
+
+// Tag.java
+
+package io.quicktype;
+
+import com.fasterxml.jackson.annotation.*;
+
+public class Tag {
+    private String name;
+
+    @JsonProperty("name")
+    public String getName() { return name; }
+    @JsonProperty("name")
+    public void setName(String value) { this.name = value; }
+}
