@@ -1,0 +1,4 @@
+Esta semana se ha generado:
+ Varias clases de dominio( Criaturas y Solicitud)
+Investigación y traducción del Json con herramienta para generar a una clase
+
