@@ -1,4 +1,5 @@
 Esta semana se ha generado:
  Varias clases de dominio( Criaturas y Solicitud)
 Investigación y traducción del Json con herramienta para generar a una clase
-
+Una interfaz de lógica de negocio que contendrá métodos de la simulación. Es provisional
+Se ha generado un archivo de test para la anterior interfaz. No se ha acabado
