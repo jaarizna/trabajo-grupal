@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import Simulacion;
 
+
 class SimulacionTest {
 
     private Simulacion simulacion;
@@ -41,6 +42,32 @@ class SimulacionTest {
         Criatura c=new CriaturaDuplicada(0,1);
         assertEquals(false, simulacion.puedeMover(c,1,1));
     }
+    
+    
+    @Test
+    void puedeDuplicarQuieta(){
+        Criatura c=new CriaturaQuieta(0,1);
+        assertEquals(false, simulacion.puedeDuplicar(c,1,1));
+    }
 
+    @Test
+    void puedeDuplicarMovil(){
+        Criatura c=new CriaturaMovil(0,1);
+        assertEquals(true, simulacion.puedeMover(c,1,1));
+    }
+
+    
+
+    @Test
+    void puedeDuplicarDuplicada(){
+        Criatura c=new CriaturaDuplicada(0,1);
+        assertEquals(false, simulacion.puedeMover(c,1,1));
+    }
+
+    @Test
+    void puedeDuplicarDuplicada2(){
+        Criatura c=new CriaturaDuplicada(0,0);
+        assertEquals(false, simulacion.puedeMover(c,1,1));
+    }
     #TODO: Testear resto de metodos
 }
