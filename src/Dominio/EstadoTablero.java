@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EstadoTablero{
-
+    //Tablero de tamaño fijo 12x12 casillas
 	private List<Criatura> criaturas;
+    private int instante;
     
-	public EstadoTablero(){
+	public EstadoTablero(int instante){
         this.criaturas = new ArrayList<Criatura>();
+        this.instante = instante;
     }
 
-    public EstadoTablero(List<Criatura> criaturas){
+    public EstadoTablero(List<Criatura> criaturas, int instante){
         this.criaturas = criaturas;
+        this.instante = instante;
     }
 
     public List<Criatura> getCriaturas() {
@@ -22,10 +25,29 @@ public class EstadoTablero{
     public void setCriaturas(List<Criatura> criaturas) {
         this.criaturas = criaturas;
     }
+
+    public int getInstante() {
+        return instante;
+    }
+
+    public void setInstante(int instante) {
+        this.instante = instante;
+    }
 	
     public String toString(){
-        //TODO: Implementar como lo que se devuelve al final
-
+        String res="12";
+        for(Criatura c:this.criaturas){
+            res+="\n";
+            res+=c.getX()+" "+c.getY()+",";
+            if(c instanceof CriaturaMovil){
+                res+="red";
+            }else if(c instanceof CriaturaReplica){
+                res+="blue";
+            }else if(c instanceof CriaturaQuieta){
+                res+="green";
+            }
+        }
+        return res;
     }
 
 }
