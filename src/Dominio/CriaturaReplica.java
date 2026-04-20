@@ -15,4 +15,9 @@ public class CriaturaReplica extends Criatura{
 	public void setProbabilidad(int prob){
 		this.probablilidad=prob;
 	}
+
+	@Override
+	public String getColor() {
+		return "green";
+	}
 }

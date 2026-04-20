@@ -23,4 +23,6 @@ public abstract class Criatura {
 	public void setY(int y) {
 		this.y=y;
 	}
+
+	public abstract String getColor();
 }

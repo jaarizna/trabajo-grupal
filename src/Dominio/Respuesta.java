@@ -1,14 +1,12 @@
 package Dominio;
 
-import java.io.File;
-
 public class Respuesta {
     private String token;
-    private File archivo;
+    private String contenido;
 
-    public Respuesta(String token, File archivo) {
+    public Respuesta(String token, String contenido) {
         this.token = token;
-        this.archivo = archivo;
+        this.contenido = contenido;
     }
 
     public String getToken() {
@@ -19,11 +17,11 @@ public class Respuesta {
         this.token = token;
     }
 
-    public File getArchivo() {
-        return archivo;
+    public String getContenido() {
+        return contenido;
     }
 
-    public void setArchivo(File archivo) {
-        this.archivo = archivo;
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
     }
 }

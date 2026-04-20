@@ -35,17 +35,9 @@ public class EstadoTablero{
     }
 	
     public String toString(){
-        String res="12";
+        String res="";
         for(Criatura c:this.criaturas){
-            res+="\n";
-            res+=this.instante+","+c.getX()+" "+c.getY()+",";
-            if(c instanceof CriaturaMovil){
-                res+="red";
-            }else if(c instanceof CriaturaReplica){
-                res+="blue";
-            }else if(c instanceof CriaturaQuieta){
-                res+="green";
-            }
+            res+=this.instante+","+c.getX()+" "+c.getY()+","+c.getColor()+"\n";
         }
         return res;
     }

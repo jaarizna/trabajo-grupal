@@ -6,6 +6,9 @@ public class CriaturaQuieta extends Criatura{
 		super(x, y);
 	}
 
-	
+	@Override
+	public String getColor() {
+		return "blue";
+	}
 
 }
