@@ -38,7 +38,7 @@ public class EstadoTablero{
         String res="12";
         for(Criatura c:this.criaturas){
             res+="\n";
-            res+=c.getX()+" "+c.getY()+",";
+            res+=this.instante+","+c.getX()+" "+c.getY()+",";
             if(c instanceof CriaturaMovil){
                 res+="red";
             }else if(c instanceof CriaturaReplica){
