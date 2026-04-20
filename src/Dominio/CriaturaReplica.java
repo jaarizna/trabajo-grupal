@@ -6,9 +6,13 @@ public class CriaturaReplica extends Criatura{
 	
 	public CriaturaReplica(int x, int y) {
 		super(x, y);
-		// TODO Auto-generated constructor stub
 	}
 
+	public int getProbabilidad(){
+		return this.probablilidad;
+	}
 	
-
+	public void setProbabilidad(int prob){
+		this.probablilidad=prob;
+	}
 }
