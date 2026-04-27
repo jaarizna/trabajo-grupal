@@ -33,6 +33,10 @@ public class EstadoTablero{
     public void setInstante(int instante) {
         this.instante = instante;
     }
+    
+    public long getLongCuadrado() {
+    	return Math.round(1.25* Math.sqrt(criaturas.size()));
+    }
 	
     public String toString(){
         String res="";
