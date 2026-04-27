@@ -50,7 +50,10 @@ public class Simulacion {
 		b.setY(y);
 		}
 		if(b instanceof CriaturaReplica) {
+			List<Criatura> l= tablero.getCriaturas();
+			l.add(new CriaturaReplica(x, y));
 			
+			tablero.setCriaturas(l); 
 		}
 	}
 
@@ -65,8 +68,21 @@ public class Simulacion {
 		}
 		return false;
 	}
+	
+	
+	
 
 	public void simular() {
-
+		for(Criatura c : tablero.getCriaturas()) {
+			int nX= c.getX()+ valores[r.nextInt(3)];
+			int nY=c.getY()+ valores[r.nextInt(3)];
+			if(puedeActuar(c,nX,nY )) {
+				actuar(c, nX, nY);
+			}
+		}
+		tablero.toString();
+		tablero.setInstante(tablero.getInstante()+1);
+			
+		
 	}
 }
