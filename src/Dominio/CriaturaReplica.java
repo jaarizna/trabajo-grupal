@@ -1,5 +1,8 @@
 package Dominio;
 
+/**
+ * Clase abstracta que representa a una criatura de tipo "Replica" en el tablero
+ */
 public class CriaturaReplica extends Criatura{
 
 	private int probablilidad =30;
