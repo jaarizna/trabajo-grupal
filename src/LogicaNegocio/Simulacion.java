@@ -56,6 +56,8 @@ public class Simulacion {
 				return false;
 			} else if (hayCriatura(x, y)) {
 				return false;
+			} else if (b.estaAlLado(x, y)) {
+				return false;
 			} else {
 				return true;
 			}
