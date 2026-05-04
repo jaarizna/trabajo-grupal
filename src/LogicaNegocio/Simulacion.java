@@ -20,11 +20,13 @@ import Dominio.EstadoTablero;
 
 public class Simulacion {
 	private EstadoTablero tablero;
+	private int maxInstantes;
 	private static final int[] valores = { -1, 0, 1 };
 	private Random r = new Random();
 
-	public Simulacion(EstadoTablero t) {
+	public Simulacion(EstadoTablero t,int max) {
 		tablero = t;
+		maxInstantes=max;
 	}
 
 	/**
@@ -82,10 +84,14 @@ public class Simulacion {
 			b.setY(y);
 		}
 		if (b instanceof CriaturaReplica) {
-			List<Criatura> l = tablero.getCriaturas();
-			l.add(new CriaturaReplica(x, y));
+			CriaturaReplica c = (CriaturaReplica) b;
+			if(randomProbEvaluar(c.getProbabilidad())){
+				List<Criatura> l = tablero.getCriaturas();
+				l.add(new CriaturaReplica(x, y));
 
-			tablero.setCriaturas(l);
+				tablero.setCriaturas(l);
+			}
+			
 		}
 	}
 
@@ -110,7 +116,7 @@ public class Simulacion {
 	 * Realiza la simulacion de un instante
 	 * 
 	 */
-	public void simular() {
+	public void simularInstante() {
 		for (Criatura c : tablero.getCriaturas()) {
 			int nX = c.getX() + valores[r.nextInt(3)];
 			int nY = c.getY() + valores[r.nextInt(3)];
@@ -118,8 +124,26 @@ public class Simulacion {
 				actuar(c, nX, nY);
 			}
 		}
+		//TODO: guardar de alguna manera cada instante
 		tablero.toString();
 		tablero.avanzarInstante();
+	}
 
+	public void simular() {
+		while (tablero.getInstante() < maxInstantes) {
+			simularInstante();
+		}
+	}
+
+
+
+	/**
+	 * Devuelve true con probabilidad prob%
+	 * 
+	 */
+	private boolean randomProbEvaluar(int prob) {
+        Random r= new Random();
+        int r1 = r.nextInt(99);
+		return prob-1>=r1;
 	}
 }
