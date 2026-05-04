@@ -68,7 +68,7 @@ public class EstadoTablero {
 	 * Le suma 1 a la instancia de tiempo
 	 * 
 	 */
-	public void avanzarInastance() {
+	public void avanzarInstance() {
 		this.instante++;
 	}
 

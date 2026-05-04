@@ -10,8 +10,13 @@ import Dominio.CriaturaQuieta;
 import Dominio.CriaturaReplica;
 import Dominio.EstadoTablero;
 
-//TODO: Darle una vuelta a esta interfaz
-//TODO: Decidir si es interfaz
+/**
+ * 
+ * Clase encargada de simular un tablero determinado
+ * @param t Tablero donde se aloja la simulacion
+ * 
+ */
+
 public class Simulacion {
 	private EstadoTablero tablero;
 	private static final int[] valores = { -1, 0, 1 };
@@ -21,14 +26,30 @@ public class Simulacion {
 		tablero = t;
 	}
 
+	 /**
+     * Devuelve el estado del tablero
+     * 
+     * @param tokenSolicitud nuevo token de la solicitud
+     */
 	public EstadoTablero getTablero() {
 		return tablero;
 	}
-
+	/**
+     * Devuelve la lista de las criaturas del tablero
+     * 
+     * return  lista de las criaturas
+     */
 	public List<Criatura> getCriaturas() {
 		return tablero.getCriaturas();
 	}
 
+	 /**
+     * Devuelve true si una criatura b puede hacer algo y false en caso contrario
+     * 
+     * @param b criatura que se determina si podra hacer algo
+     * @param x nueva posicion x del tablero donde se puede actuar
+     * @param y nueva posicion y del tablero donde se puede actuar
+     */
 	public boolean puedeActuar(Criatura b, int x, int y) {
 		if (! (b instanceof CriaturaQuieta)) {
 			if ((x < 0 && x >= tablero.getLongCuadrado()) || (y < 0 && y >= tablero.getLongCuadrado())) {
@@ -43,7 +64,13 @@ public class Simulacion {
 		}
 
 	}
-
+	/**
+     * Se realiza la accion de la criatura b
+     * 
+     * @param b criatura que se determina si podra hacer algo
+     * @param x nueva posicion x del tablero donde se puede actuar
+     * @param y nueva posicion y del tablero donde se puede actuar
+     */
 	public void actuar(Criatura b, int x, int y) {
 		if(b instanceof CriaturaMovil) {
 		b.setX(x);
@@ -58,7 +85,12 @@ public class Simulacion {
 	}
 
 	
-
+	/**
+     * Devuelve true si hay una criaura en las coordenadas(x,y) y falso en el contrario
+     * 
+     * @param x nueva posicion x del tablero donde se puede actuar
+     * @param y nueva posicion y del tablero donde se puede actuar
+     */
 	public boolean hayCriatura(int x, int y) {
 
 		for (Criatura c : tablero.getCriaturas()) {
@@ -71,7 +103,10 @@ public class Simulacion {
 	
 	
 	
-
+	/**
+     * Realiza la simulacion de un instante
+     * 
+     */
 	public void simular() {
 		for(Criatura c : tablero.getCriaturas()) {
 			int nX= c.getX()+ valores[r.nextInt(3)];
@@ -81,7 +116,7 @@ public class Simulacion {
 			}
 		}
 		tablero.toString();
-		tablero.setInstante(tablero.getInstante()+1);
+		tablero.avanzarInstance();
 			
 		
 	}
