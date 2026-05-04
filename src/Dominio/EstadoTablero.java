@@ -7,7 +7,7 @@ import java.util.List;
  * 
  * Clase encargada de repesentar la situacion de un determinado tablero
  * 
- * @param instance instante de tiempo en el tablero
+ * @param instance  instante de tiempo en el tablero
  * @param criaturas lsita de las criaturas que hay ene le tablero
  * 
  */
@@ -62,19 +62,19 @@ public class EstadoTablero {
 	public void setInstante(int instante) {
 		this.instante = instante;
 	}
-	
+
 	/**
 	 * 
 	 * Le suma 1 a la instancia de tiempo
 	 * 
 	 */
-	public void avanzarInstance() {
+	public void avanzarInstante() {
 		this.instante++;
 	}
 
 	/**
 	 * 
-	 * Obtenemos la longitud del tablero calculada segun el nº de craturas
+	 * Obtenemos la longitud del tablero calculada según el nº de criaturas
 	 * 
 	 */
 	public long getLongCuadrado() {
