@@ -23,6 +23,8 @@ public class Simulacion {
 	private int maxInstantes;
 	private static final int[] valores = { -1, 0, 1 };
 	private Random r = new Random();
+	private ArrayList<String> resultados=new ArrayList<>();
+
 
 	public Simulacion(EstadoTablero t,int max) {
 		tablero = t;
@@ -124,8 +126,7 @@ public class Simulacion {
 				actuar(c, nX, nY);
 			}
 		}
-		//TODO: guardar de alguna manera cada instante
-		tablero.toString();
+		resultados.add(tablero.toString());
 		tablero.avanzarInstante();
 	}
 
