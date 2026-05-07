@@ -23,12 +23,78 @@ public class Simulacion {
 	private int maxInstantes;
 	private static final int[] valores = { -1, 0, 1 };
 	private Random r = new Random();
-	private ArrayList<String> resultados=new ArrayList<>();
+	private ArrayList<String> resultados = new ArrayList<>();
+	private int longCuadrado;
 
-
-	public Simulacion(EstadoTablero t,int max) {
+	public Simulacion(EstadoTablero t, int max) {
 		tablero = t;
-		maxInstantes=max;
+		maxInstantes = max;
+	}
+
+	public Simulacion(int max, List<Integer> numCriaturas) {
+		tablero = new EstadoTablero(0);
+		maxInstantes = max;
+		int numTot = 0;
+		for (int n : numCriaturas) {
+			numTot += n;
+		}
+		longCuadrado = numTot;
+		tablero.setCriaturas(getCriaturas());
+
+	}
+
+	/**
+	 * Puebla el tablero con las criaturas y devuelve como lista
+	 * 
+	 * @param numCriaturas lista con la cantidad de criaturas de cada tipo
+	 *                     (QUIETA,MOVIL,REPLICA)
+	 */
+
+	public List<Criatura> poblar(List<Integer> numCriaturas) {
+		List<Criatura> l = new ArrayList<>();
+
+
+		crearCriaturas(l, numCriaturas.get(0),  "quieta");
+		crearCriaturas(l, numCriaturas.get(1),  "movil");
+		crearCriaturas(l, numCriaturas.get(2),  "replica");
+
+		return l;
+	}
+
+	/**
+	 * Crea crituras a segun una cantidad y un tipo y lo añade a una lista
+	 * 
+	 * @param l  lista de las criaturas
+	 * @param cantidad  numero de criaturas a crear
+	 * @param tipo  tipo de criatura a crear
+	 */
+	private void crearCriaturas(List<Criatura> l, int cantidad, String tipo) {
+		int i = 0;
+		Random r = new Random();
+
+		while (i < cantidad) {
+			int x = r.nextInt(longCuadrado - 1);
+			int y = r.nextInt(longCuadrado - 1);
+
+			while (hayCriatura(x, y)) {
+				x = r.nextInt(longCuadrado - 1);
+				y = r.nextInt(longCuadrado - 1);
+			}
+
+			switch (tipo) {
+			case "quieta":
+				l.add(new CriaturaQuieta(x, y));
+				break;
+			case "movil":
+				l.add(new CriaturaMovil(x, y));
+				break;
+			case "replica":
+				l.add(new CriaturaReplica(x, y));
+				break;
+			}
+
+			i++;
+		}
 	}
 
 	/**
@@ -58,7 +124,7 @@ public class Simulacion {
 	 */
 	public boolean puedeActuar(Criatura b, int x, int y) {
 		if (!(b instanceof CriaturaQuieta)) {
-			if ((x < 0 && x >= tablero.getLongCuadrado()) || (y < 0 && y >= tablero.getLongCuadrado())) {
+			if ((x < 0 && x >= longCuadrado) || (y < 0 && y >= longCuadrado)) {
 				return false;
 			} else if (hayCriatura(x, y)) {
 				return false;
@@ -87,13 +153,13 @@ public class Simulacion {
 		}
 		if (b instanceof CriaturaReplica) {
 			CriaturaReplica c = (CriaturaReplica) b;
-			if(randomProbEvaluar(c.getProbabilidad())){
+			if (randomProbEvaluar(c.getProbabilidad())) {
 				List<Criatura> l = tablero.getCriaturas();
 				l.add(new CriaturaReplica(x, y));
 
 				tablero.setCriaturas(l);
 			}
-			
+
 		}
 	}
 
@@ -136,15 +202,22 @@ public class Simulacion {
 		}
 	}
 
-
-
 	/**
 	 * Devuelve true con probabilidad prob%
 	 * 
 	 */
 	private boolean randomProbEvaluar(int prob) {
-        Random r= new Random();
-        int r1 = r.nextInt(99);
-		return prob-1>=r1;
+		Random r = new Random();
+		int r1 = r.nextInt(99);
+		return prob - 1 >= r1;
+	}
+
+	/**
+	 * 
+	 * Obtenemos la longitud del tablero calculada según el nº de criaturas
+	 * 
+	 */
+	public long getLongCuadrado() {
+		return Math.round(1.25 * Math.sqrt(longCuadrado));
 	}
 }

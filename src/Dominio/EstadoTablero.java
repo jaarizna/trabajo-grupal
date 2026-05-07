@@ -12,7 +12,7 @@ import java.util.List;
  * 
  */
 public class EstadoTablero {
-	// Tablero de tamaño fijo 12x12 casillas
+	
 	private List<Criatura> criaturas;
 	private int instante;
 
@@ -72,14 +72,7 @@ public class EstadoTablero {
 		this.instante++;
 	}
 
-	/**
-	 * 
-	 * Obtenemos la longitud del tablero calculada según el nº de criaturas
-	 * 
-	 */
-	public long getLongCuadrado() {
-		return Math.round(1.25 * Math.sqrt(criaturas.size()));
-	}
+	
 
 	/**
 	 * 
