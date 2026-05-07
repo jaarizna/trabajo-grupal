@@ -1,6 +1,6 @@
-package Persistencia;
+package main.java.Persistencia;
 
-import Dominio.Respuesta;
+import main.java.Dominio.Respuesta;
 
 public interface BD {
     /**

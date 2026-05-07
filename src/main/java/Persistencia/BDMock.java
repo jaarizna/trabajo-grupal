@@ -1,4 +1,4 @@
-package Persistencia;
+package main.java.Persistencia;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.Scanner;
 
-import Dominio.Respuesta;
+import main.java.Dominio.Respuesta;
 
 public class BDMock implements BD {
 

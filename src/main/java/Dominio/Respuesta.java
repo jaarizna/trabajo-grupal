@@ -1,4 +1,4 @@
-package Dominio;
+package main.java.Dominio;
 
 /**
  * Clase encargada de representar una respuesta (token,contenido)

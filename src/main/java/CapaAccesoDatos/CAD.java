@@ -1,7 +1,7 @@
-package CapaAccesoDatos;
+package main.java.CapaAccesoDatos;
 
-import Dominio.Respuesta;
-import Persistencia.BD;
+import main.java.Dominio.Respuesta;
+import main.java.Persistencia.BD;
 /**
  * Clase destinada a combinar el create y update del
  * @param bd Base de datos donde se almacena los tokens

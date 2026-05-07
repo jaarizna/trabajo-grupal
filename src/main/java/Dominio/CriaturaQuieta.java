@@ -1,4 +1,4 @@
-package Dominio;
+package main.java.Dominio;
 
 /**
  * Clase  que representa a una criatura de tipo "Quieta" en el tablero

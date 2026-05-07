@@ -1,4 +1,4 @@
-package Dominio;
+package main.java.Dominio;
 
 /**
  * Clase abstracta que representa a una criatura en el tablero

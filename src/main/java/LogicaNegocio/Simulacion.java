@@ -1,14 +1,14 @@
-package LogicaNegocio;
+package main.java.LogicaNegocio;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Dominio.Criatura;
-import Dominio.CriaturaMovil;
-import Dominio.CriaturaQuieta;
-import Dominio.CriaturaReplica;
-import Dominio.EstadoTablero;
+import main.java.Dominio.Criatura;
+import main.java.Dominio.CriaturaMovil;
+import main.java.Dominio.CriaturaQuieta;
+import main.java.Dominio.CriaturaReplica;
+import main.java.Dominio.EstadoTablero;
 
 /**
  * 
