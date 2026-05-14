@@ -12,7 +12,7 @@ import java.util.List;
  * 
  */
 public class EstadoTablero {
-	
+
 	private List<Criatura> criaturas;
 	private int instante;
 
@@ -71,8 +71,6 @@ public class EstadoTablero {
 	public void avanzarInstante() {
 		this.instante++;
 	}
-
-	
 
 	/**
 	 * 

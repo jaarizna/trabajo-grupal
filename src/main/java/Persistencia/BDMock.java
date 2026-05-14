@@ -10,51 +10,51 @@ import main.java.Dominio.Respuesta;
 
 public class BDMock implements BD {
 
-    @Override
-    public boolean createRespuesta(String token) {
-        try {
-            File f = new File(token);
-            if (f.createNewFile()) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (IOException e) {
-            return false;
-        }
-    }
+	@Override
+	public boolean createRespuesta(String token) {
+		try {
+			File f = new File(token);
+			if (f.createNewFile()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (IOException e) {
+			return false;
+		}
+	}
 
-    @Override
-    public Respuesta readRespuesta(String token) {
-        File f = new File(token);
+	@Override
+	public Respuesta readRespuesta(String token) {
+		File f = new File(token);
 
-        try (Scanner myReader = new Scanner(f)) {
-            String contenido="";
-            while (myReader.hasNextLine()) {
-                contenido += myReader.nextLine();
+		try (Scanner myReader = new Scanner(f)) {
+			String contenido = "";
+			while (myReader.hasNextLine()) {
+				contenido += myReader.nextLine();
 
-            }
-            return new Respuesta(token, contenido);
+			}
+			return new Respuesta(token, contenido);
 
-        } catch (FileNotFoundException e) {
-            return null;
-        }
-    }
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+	}
 
-    @Override
-    public boolean updateRespuesta(Respuesta r) {
-        try (FileWriter myWriter = new FileWriter(r.getToken())) {
-            myWriter.write(r.getContenido());
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
+	@Override
+	public boolean updateRespuesta(Respuesta r) {
+		try (FileWriter myWriter = new FileWriter(r.getToken())) {
+			myWriter.write(r.getContenido());
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
 
-    @Override
-    public boolean deleteRespuesta(String token) {
-        File f = new File(token); 
-        return f.delete();
-    }
-    
+	@Override
+	public boolean deleteRespuesta(String token) {
+		File f = new File(token);
+		return f.delete();
+	}
+
 }

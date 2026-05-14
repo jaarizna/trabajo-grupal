@@ -53,10 +53,9 @@ public class Simulacion {
 	public List<Criatura> poblar(List<Integer> numCriaturas) {
 		List<Criatura> l = new ArrayList<>();
 
-
-		crearCriaturas(l, numCriaturas.get(0),  "quieta");
-		crearCriaturas(l, numCriaturas.get(1),  "movil");
-		crearCriaturas(l, numCriaturas.get(2),  "replica");
+		crearCriaturas(l, numCriaturas.get(0), "quieta");
+		crearCriaturas(l, numCriaturas.get(1), "movil");
+		crearCriaturas(l, numCriaturas.get(2), "replica");
 
 		return l;
 	}
@@ -64,9 +63,9 @@ public class Simulacion {
 	/**
 	 * Crea crituras a segun una cantidad y un tipo y lo añade a una lista
 	 * 
-	 * @param l  lista de las criaturas
-	 * @param cantidad  numero de criaturas a crear
-	 * @param tipo  tipo de criatura a crear
+	 * @param l        lista de las criaturas
+	 * @param cantidad numero de criaturas a crear
+	 * @param tipo     tipo de criatura a crear
 	 */
 	private void crearCriaturas(List<Criatura> l, int cantidad, String tipo) {
 		int i = 0;
