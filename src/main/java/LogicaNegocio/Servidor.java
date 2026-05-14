@@ -32,7 +32,7 @@ public class Servidor {
     public Response enviarEmail(@QueryParam("emailAddress") String emailAddress, 
                                 @QueryParam("message") String message) {
         //Este en principio tiene que estar expuesto pero no implementado
-        return Response.status(405).entity().build();
+        return Response.status(405).build();
     }
 
     @POST
