@@ -26,13 +26,12 @@ jobs:
       - name: Ejecutar Tests
         run: mvn test
 
-      - name: Generar Javadoc
+      - name: Generar Javadoc con Maven
         run: |
-          javadoc -d docs \
-                  -sourcepath src/main/java \
-                  -subpackages Dominio:LogicaNegocio:Persistencia:CapaAccesoDatos \
-                  -Xdoclint:none \
-                  -quiet
+          mvn javadoc:javadoc
+          
+          mkdir -p docs
+          cp -r target/site/apidocs/* docs/
 
       - name: Subir artefacto de Pages
         uses: actions/upload-pages-artifact@v3
