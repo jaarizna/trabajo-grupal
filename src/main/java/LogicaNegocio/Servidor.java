@@ -1,8 +1,11 @@
 package main.java.LogicaNegocio;
 
+import java.util.Random;
+
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import main.java.Dominio.Respuesta;
 import main.java.Dominio.Solicitud;
 
 @Path("/")
@@ -39,8 +42,15 @@ public class Servidor {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response crearSolicitud(@QueryParam("nombreUsuario") String nombreUsuario, Solicitud solicitud) {
 		// TODO: Implementar creación de solicitud
+		Simulacion s= new Simulacion(solicitud.getmaxInstantes(),solicitud.getCantidadesIniciales());
+		s.simular();
+		for(String res:s.getResultados()) {
+			
+		}
+		
 		boolean done = true;
-		int tok = 1;
+		Random r= new Random();
+		int tok = r.nextInt(9999999);
 		boolean data = true;
 		String errorMessage = "";
 		String jsonResponse = "{\"done\": " + data + ", \"tokenSolicitud\": " + tok + ", \"data\": " + data + "}";

@@ -82,6 +82,7 @@ public class EstadoTablero {
 		for (Criatura c : this.criaturas) {
 			res += this.instante + "," + c.getX() + " " + c.getY() + "," + c.getColor() + "\n";
 		}
+		res+="--------------------------------------------------------------------------";
 		return res;
 	}
 

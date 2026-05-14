@@ -7,18 +7,18 @@ import java.util.List;
  * 
  * @param tokenSolicitud      token asignado a la solicitud
  * @param cantidadesIniciales lista con cantidades iniciales de cada entidad
- * @param nombreEntidades     lista con los nombres de las entidades
+ * @param maxInstantes tiempo que taradara en simular
  */
 public class Solicitud {
 
 	private int tokenSolicitud;
 	private List<Integer> cantidadesIniciales;
-	private List<String> nombreEntidades;
+	private int  maxInstantes;
 
-	public Solicitud(int token, List<Integer> nIniciales, List<String> nombres) {
+	public Solicitud(int token, List<Integer> nIniciales, int maxInstantes) {
 		this.tokenSolicitud = token;
 		this.cantidadesIniciales = nIniciales;
-		this.nombreEntidades = nombres;
+		this.maxInstantes = maxInstantes;
 	}
 
 	/**
@@ -59,22 +59,21 @@ public class Solicitud {
 	}
 
 	/**
-	 * Devuelve los nombres de entidades de la solicitud
+	 * Devuelve el tiempo que se simula
 	 * 
 	 * @return lista de nombres de entidades de la solicitud
 	 */
-	public List<String> getNombreEntidades() {
-		return nombreEntidades;
+	public int getmaxInstantes() {
+		return this.maxInstantes;
 	}
 
 	/**
-	 * Cambia los los nombres de entidades de la solicitud
+	 * Cambia  el tiempo que se simula
 	 * 
-	 * @param nombreEntidades nueva lista de los nombres de entidades de la
-	 *                        solicitud
+	 * @param maxInstantes nuevo tiempo que se simula
 	 */
-	public void setNombreEntidades(List<String> nombreEntidades) {
-		this.nombreEntidades = nombreEntidades;
+	public void setmaxInstantes(int maxInstantes) {
+		this.maxInstantes = maxInstantes;
 	}
 
 }

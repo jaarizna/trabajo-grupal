@@ -199,6 +199,7 @@ public class Simulacion {
 		while (tablero.getInstante() < maxInstantes) {
 			simularInstante();
 		}
+		
 	}
 
 	/**
@@ -218,5 +219,14 @@ public class Simulacion {
 	 */
 	public long getLongCuadrado() {
 		return Math.round(1.25 * Math.sqrt(longCuadrado));
+	}
+	
+	/**
+	 * 
+	 * Obtenemos el resultado de la simuilacion
+	 * 
+	 */
+	public List<String> getResultados() {
+		return this.resultados;
 	}
 }
