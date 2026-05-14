@@ -2,12 +2,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import LogicaNegocio.Simulacion;
-import Dominio.Criatura;
-import Dominio.CriaturaMovil;
-import Dominio.CriaturaQuieta;
-import Dominio.CriaturaReplica;
-import Dominio.EstadoTablero;
+import main.java.LogicaNegocio.Simulacion;
+import main.java.Dominio.Criatura;
+import main.java.Dominio.CriaturaMovil;
+import main.java.Dominio.CriaturaQuieta;
+import main.java.Dominio.CriaturaReplica;
+import main.java.Dominio.EstadoTablero;
 
 
 class SimulacionTest {
