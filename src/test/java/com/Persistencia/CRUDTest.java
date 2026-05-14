@@ -1,6 +1,6 @@
-import Dominio.Respuesta;
-import Persistencia.BD;
-import Persistencia.BDMock;
+import main.java.Dominio.Respuesta;
+import main.java.Persistencia.BD;
+import main.java.Persistencia.BDMock;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Date;
