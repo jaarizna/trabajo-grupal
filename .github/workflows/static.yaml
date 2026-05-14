@@ -28,7 +28,11 @@ jobs:
 
       - name: Generar Javadoc
         run: |
-          javadoc -d docs -sourcepath src -subpackages Dominio:LogicaNegocio:Persistencia:CapaAccesoDatos
+          javadoc -d docs \
+                  -sourcepath src/main/java \
+                  -subpackages Dominio:LogicaNegocio:Persistencia:CapaAccesoDatos \
+                  -Xdoclint:none \
+                  -quiet
 
       - name: Subir artefacto de Pages
         uses: actions/upload-pages-artifact@v3
