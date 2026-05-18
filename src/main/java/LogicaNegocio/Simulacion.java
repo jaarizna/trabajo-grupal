@@ -39,7 +39,7 @@ public class Simulacion {
 			numTot += n;
 		}
 		longCuadrado = numTot;
-		tablero.setCriaturas(getCriaturas());
+		tablero.setCriaturas(poblar(numCriaturas));
 
 	}
 
