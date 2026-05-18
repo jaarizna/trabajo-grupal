@@ -45,7 +45,7 @@ class SimulacionTest {
     @Test
     void puedeActuarReplica(){
         Criatura c=new CriaturaReplica(0,1);
-        assertEquals(false, simulacion.puedeActuar(c,1,1));
+        assertEquals(true, simulacion.puedeActuar(c,1,1));
     }
 
     //actuar()
@@ -76,14 +76,12 @@ class SimulacionTest {
     //hayCriatura()
     @Test
     void hayCriatura(){
-        
-        ArrayList<Integer> criaturas = new ArrayList<>(1);
-        criaturas.add(0);
-        criaturas.add(0);
-        criaturas.add(1);
-        simulacion = new Simulacion(10,criaturas);
+        Criatura c = new CriaturaReplica(0,0);
+        ArrayList<Criatura> criaturas = new ArrayList<Criatura>();
+        EstadoTablero tablero = new EstadoTablero(criaturas, 0);
+        simulacion = new Simulacion(tablero,10);
 
-        
+        simulacion.getCriaturas().add(c);
         assertEquals(true, simulacion.hayCriatura(0, 0));
         assertEquals(false, simulacion.hayCriatura(0, 1));
     }

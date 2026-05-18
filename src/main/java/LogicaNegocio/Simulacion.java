@@ -128,9 +128,10 @@ public class Simulacion {
 			} else if (hayCriatura(x, y)) {
 				return false;
 			} else if (b.estaAlLado(x, y)) {
-				return false;
-			} else {
+				
 				return true;
+			} else {
+				return false;
 			}
 		} else {
 			return false;

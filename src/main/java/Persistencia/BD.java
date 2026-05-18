@@ -19,7 +19,7 @@ public interface BD {
 	 * @return Un objeto Respuesta con el contenido leído, string vacía si está
 	 *         vacío, o null si no se encontró el archivo.
 	 */
-	public Respuesta readRespuesta(String token);
+	public String readRespuesta(String token);
 
 	/**
 	 * Actualiza el contenido de la respuesta con los nuevos datos.

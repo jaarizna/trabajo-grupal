@@ -13,7 +13,7 @@ public class BDMock implements BD {
 	@Override
 	public boolean createRespuesta(String token) {
 		try {
-			File f = new File(token);
+			File f = new File(token+".txt");
 			if (f.createNewFile()) {
 				return true;
 			} else {
@@ -25,8 +25,8 @@ public class BDMock implements BD {
 	}
 
 	@Override
-	public Respuesta readRespuesta(String token) {
-		File f = new File(token);
+	public String readRespuesta(String token) {
+		File f = new File(token+".txt");
 
 		try (Scanner myReader = new Scanner(f)) {
 			String contenido = "";
@@ -34,7 +34,8 @@ public class BDMock implements BD {
 				contenido += myReader.nextLine();
 
 			}
-			return new Respuesta(token, contenido);
+			
+			return  contenido;
 
 		} catch (FileNotFoundException e) {
 			return null;
@@ -43,7 +44,7 @@ public class BDMock implements BD {
 
 	@Override
 	public boolean updateRespuesta(Respuesta r) {
-		try (FileWriter myWriter = new FileWriter(r.getToken())) {
+		try (FileWriter myWriter = new FileWriter(r.getToken()+".txt")) {
 			myWriter.write(r.getContenido());
 			return true;
 		} catch (IOException e) {
@@ -53,7 +54,7 @@ public class BDMock implements BD {
 
 	@Override
 	public boolean deleteRespuesta(String token) {
-		File f = new File(token);
+		File f = new File(token+".txt");
 		return f.delete();
 	}
 
