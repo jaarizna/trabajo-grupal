@@ -1,0 +1,8 @@
+El proyecto ha implementado la logica.
+Ha habido problemas a la hora de ejecutarla (Excepciones de concurrencia de hilos y negativos en posiciones no esperados), falta tiempo para testear y encontrar los errores.
+Ha faltado completar la implementación de la clase que actuaría como servidor (con los métodos de la API).
+Por problemas de versiones no se ha conseguido conseguir ejecutar los tests y generar un javadoc en github pages. En su defecto, se ha generado en local y se ha incluido en la carpeta doc del repositorio.
+Ha faltado generar un dockerfile y demás.
+Como no se ha completado el manual de usuario es incompleto y erróneo.
+
+Conclusión: En principio, con un par de sesiones más se podría completar.
