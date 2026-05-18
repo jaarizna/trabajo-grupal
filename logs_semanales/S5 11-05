@@ -1,0 +1,2 @@
+Se ha formateado el proyecto a maven.
+Se ha añadido un YAML para intentar pasar los Tests y Javadoc con cada commit (fallan ambos por problemas de versiones)
