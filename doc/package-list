@@ -1,0 +1,7 @@
+io.quicktype
+main.java
+main.java.CapaAccesoDatos
+main.java.Dominio
+main.java.LogicaNegocio
+main.java.Persistencia
+test.java.com.Persistencia
