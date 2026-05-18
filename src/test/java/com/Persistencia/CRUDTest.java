@@ -26,7 +26,7 @@ public class CRUDTest {
 
         
         assertEquals(true,bd.createRespuesta("tokenTEST1"));
-        System.out.print(bd.readRespuesta("tokenTEST1"));
+        
         assertEquals("", bd.readRespuesta("tokenTEST1"));
         assertEquals(false,bd.createRespuesta("tokenTEST1"));
         bd.deleteRespuesta("tokenTEST1");

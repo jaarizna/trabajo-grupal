@@ -34,7 +34,7 @@ public class BDMock implements BD {
 				contenido += myReader.nextLine();
 
 			}
-			System.out.print(contenido);
+			
 			return  contenido;
 
 		} catch (FileNotFoundException e) {
