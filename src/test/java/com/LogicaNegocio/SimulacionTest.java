@@ -1,3 +1,5 @@
+package test.java.com.LogicaNegocio;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,9 +19,8 @@ class SimulacionTest {
 
     @BeforeEach
     void setUp() {
-        ArrayList<Criatura> criaturas = new ArrayList<>();
-        EstadoTablero tablero = new EstadoTablero(criaturas, 0);
-        simulacion = new Simulacion(tablero);
+        ArrayList<Integer> criaturas = new ArrayList<>();
+        simulacion = new Simulacion(10,criaturas);
     }
 
     //puedeActuar()
@@ -75,12 +76,14 @@ class SimulacionTest {
     //hayCriatura()
     @Test
     void hayCriatura(){
-        Criatura c = new CriaturaReplica(0,0);
-        ArrayList<Criatura> criaturas = new ArrayList<>(c);
-        EstadoTablero tablero = new EstadoTablero(criaturas, 0);
-        simulacion = new Simulacion(tablero);
+        
+        ArrayList<Integer> criaturas = new ArrayList<>(1);
+        criaturas.add(0);
+        criaturas.add(0);
+        criaturas.add(1);
+        simulacion = new Simulacion(10,criaturas);
 
-        simulacion.getCriaturas().add(c);
+        
         assertEquals(true, simulacion.hayCriatura(0, 0));
         assertEquals(false, simulacion.hayCriatura(0, 1));
     }
