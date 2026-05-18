@@ -63,13 +63,20 @@ public abstract class Criatura {
 	 * está al lado, false si no
 	 */
 	public boolean estaAlLado(int x, int y) {
+		System.out.print( "craitura" +this.x+","+this.y);
+		System.out.print( "coordenas" +x+","+y);
 		if (this.x != x && this.y != y) {
+		
 			return false;
+			
 		} else if (this.x == x && this.y == y) {
+			
 			return false;
 		} else if (this.x == x) {
+		
 			return this.y - y == 1 || this.y - y == -1;
 		} else if (this.y == y) {
+			
 			return this.x - x == 1 || this.x - x == -1;
 		} else {
 			return false;

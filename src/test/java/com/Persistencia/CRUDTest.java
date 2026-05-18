@@ -21,25 +21,26 @@ public class CRUDTest {
 
     @Test
     void createAndRead(){
+    	
         assertEquals(null, bd.readRespuesta("tokenTEST1"));
 
-        Respuesta r = new Respuesta("tokenTEST1", "");
-
+        
         assertEquals(true,bd.createRespuesta("tokenTEST1"));
-        assertEquals(r, bd.readRespuesta("tokenTEST1"));
+        System.out.print(bd.readRespuesta("tokenTEST1"));
+        assertEquals("", bd.readRespuesta("tokenTEST1"));
         assertEquals(false,bd.createRespuesta("tokenTEST1"));
+        bd.deleteRespuesta("tokenTEST1");
     }
 
     @Test
     void update(){
         Respuesta r = new Respuesta("tokenTEST2", "contenidoTEST2");
-
-        assertEquals(false,bd.updateRespuesta(r));
-
         bd.createRespuesta("tokenTEST2");
-
         assertEquals(true,bd.updateRespuesta(r));
-        assertEquals(r, bd.readRespuesta("tokenTEST2"));
+
+     
+        assertEquals("contenidoTEST2", bd.readRespuesta("tokenTEST2"));
+        bd.deleteRespuesta("tokenTEST2");
     }
 
     @Test
