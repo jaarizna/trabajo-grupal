@@ -80,7 +80,7 @@ public class EstadoTablero {
 	public String toString() {
 		String res = "";
 		for (Criatura c : this.criaturas) {
-			res += this.instante + "," + c.getX() + " " + c.getY() + "," + c.getColor() + "\n";
+			res +="t:"+ this.instante + "," + c.getX() + " " + c.getY() + "," + c.getColor() + "\n";
 		}
 		res+="--------------------------------------------------------------------------";
 		return res;

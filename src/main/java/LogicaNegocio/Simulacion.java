@@ -122,6 +122,7 @@ public class Simulacion {
 	 * @param y nueva posicion y del tablero donde se puede actuar
 	 */
 	public boolean puedeActuar(Criatura b, int x, int y) {
+	
 		if (!(b instanceof CriaturaQuieta)) {
 			if ((x < 0 && x >= longCuadrado) || (y < 0 && y >= longCuadrado)) {
 				return false;
@@ -148,6 +149,7 @@ public class Simulacion {
 	 */
 	public void actuar(Criatura b, int x, int y) {
 		if (b instanceof CriaturaMovil) {
+			
 			b.setX(x);
 			b.setY(y);
 		}
@@ -188,8 +190,11 @@ public class Simulacion {
 		for (Criatura c : tablero.getCriaturas()) {
 			int nX = c.getX() + valores[r.nextInt(3)];
 			int nY = c.getY() + valores[r.nextInt(3)];
+			
+			if(nY>=0 && nX>=0) {
 			if (puedeActuar(c, nX, nY)) {
 				actuar(c, nX, nY);
+			}
 			}
 		}
 		resultados.add(tablero.toString());
